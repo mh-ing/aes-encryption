@@ -1,5 +1,5 @@
 {
-    "name": "tebru/aes-encryption",
+    "name": "mh-ing/aes-encryption",
     "description": "An AES Encrypter for PHP",
     "require": {
         "php": ">=5.4",
