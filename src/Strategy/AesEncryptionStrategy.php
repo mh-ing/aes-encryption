@@ -102,7 +102,10 @@ abstract class AesEncryptionStrategy
     {
         $decoded = explode('|', $data);
 
-        Tebru\assert(3 === sizeof($decoded), new InvalidNumberOfEncryptionPieces('Encrypted string has been modified, wrong number of pieces found'));
+        //Tebru\assert(3 === sizeof($decoded), new InvalidNumberOfEncryptionPieces('Encrypted string has been modified, wrong number of pieces found'));
+        if (3 === sizeof($decoded)){
+            throw new InvalidNumberOfEncryptionPieces('Encrypted string has been modified, wrong number of pieces found');
+        }
 
         return [base64_decode($decoded[0]), base64_decode($decoded[1]), base64_decode($decoded[2])];
     }
