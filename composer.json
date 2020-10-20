@@ -4,7 +4,7 @@
     "require": {
         "php": ">=5.4",
         "ext-mcrypt": "*",
-        "tebru/assert": "~0.2"
+        "mh-ing/assert": "dev-master"
     },
     "require-dev": {
         "php": ">=5.5",
