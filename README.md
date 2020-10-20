@@ -13,7 +13,7 @@ A simple class to handle AES encryption of data
 Install using composer
 
 ```
-composer require tebru/aes-encryption
+composer require mh-ing/aes-encryption
 ```
 
 ## Usage
