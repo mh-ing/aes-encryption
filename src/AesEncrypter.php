@@ -88,11 +88,11 @@ class AesEncrypter
         //Tebru\assert($mac === $this->strategy->getMac($encryptedData), new MacHashMismatchException('MAC hashes do not match'));
         //Tebru\assert(strlen($iv) === $this->strategy->getIvSize(), new IvSizeMismatchException('IV size does not match expectation'));
 
-        if ($mac === $this->strategy->getMac($encryptedData)){
+        if ($mac !== $this->strategy->getMac($encryptedData)){
             throw new MacHashMismatchException('MAC hashes do not match');
         }
 
-        if (strlen($iv) === $this->strategy->getIvSize()){
+        if (strlen($iv) !== $this->strategy->getIvSize()){
             throw new IvSizeMismatchException('IV size does not match expectation');
         }
 
