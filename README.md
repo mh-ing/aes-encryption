@@ -42,16 +42,18 @@ new AesEncrypter($key, AesEnum::METHOD_128);
 
 ### Encryption Strategy
 
-Current supported PHP extensions are `mcrypt` and `openssl`.  This library requires mcrypt, but will use openssl instead
+Current supported PHP extension is `openssl`.  This library requires openssl
 if it is available.
 
 Upon constructing the encrypter, you may force the usage of one or the other.
 
 ```php
-new AesEncrypter($key, AesEnum::METHOD_256, AesEncrypter::STRATEGY_MCRYPT);
+new AesEncrypter($key, AesEnum::METHOD_256, AesEncrypter::STRATEGY_OPENSSL);
 ```
 
 ### Update
 fix the security warning on `php 7.4`
 
 `Warning: Use of undefined constant MCRYPT_RIJNDAEL_128 - assumed 'MCRYPT_RIJNDAEL_128' (this will throw an Error in a future version of PHP)`
+
+`Remove mcrypt because it's deprecated and use openssl`
