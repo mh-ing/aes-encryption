@@ -3,11 +3,10 @@
     "description": "An AES Encrypter for PHP",
     "require": {
         "php": ">=5.4",
-        "ext-mcrypt": "*"
+        "ext-openssl": "*",
     },
     "require-dev": {
-        "php": ">=5.5",
-        "ext-openssl": "*",
+        "php": ">=5.5"
         "phpunit/phpunit": "~4.6",
         "mockery/mockery": "0.9.*",
         "satooshi/php-coveralls": "0.6.*"

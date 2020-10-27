@@ -10,7 +10,6 @@ use Tebru\AesEncryption\Enum\AesEnum;
 use Tebru\AesEncryption\Exception\IvSizeMismatchException;
 use Tebru\AesEncryption\Exception\MacHashMismatchException;
 use Tebru\AesEncryption\Strategy\AesEncryptionStrategy;
-use Tebru\AesEncryption\Strategy\McryptStrategy;
 use Tebru\AesEncryption\Strategy\OpenSslStrategy;
 
 /**
@@ -21,7 +20,6 @@ use Tebru\AesEncryption\Strategy\OpenSslStrategy;
 class AesEncrypter
 {
     const STRATEGY_OPENSSL = 'openssl';
-    const STRATEGY_MCRYPT = 'mcrypt';
 
     /**
      * @var AesEncryptionStrategy
@@ -35,20 +33,9 @@ class AesEncrypter
      * @param string $method
      * @param AesEncryptionStrategy $strategy
      */
-    public function __construct($key, $method = AesEnum::METHOD_256, $strategy = null)
+    public function __construct($key, $method = AesEnum::METHOD_256)
     {
-        if (null === $strategy) {
-            // use openssl if it exists
-            $strategy = (function_exists('openssl_encrypt'))
-                ? new OpenSslStrategy($key, $method)
-                : new McryptStrategy($key, $method);
-        } else {
-            $strategy = (self::STRATEGY_OPENSSL === $strategy)
-                ? new OpenSslStrategy($key, $method)
-                : new McryptStrategy($key, $method);
-        }
-
-        $this->strategy = $strategy;
+        $this->strategy = new OpenSslStrategy($key, $method);
     }
 
     /**
@@ -57,9 +44,9 @@ class AesEncrypter
      * @param mixed $data
      * @return string
      */
-    public function encrypt($data)
+    public function encrypt($data, $serialized = true)
     {
-        $serializedData = serialize($data);
+        $serializedData = $serialized ? serialize($data) : $data;
         $iv = $this->strategy->createIv();
         $encrypted = $this->strategy->encryptData($serializedData, $iv);
         $mac = $this->strategy->getMac($encrypted);
@@ -76,7 +63,7 @@ class AesEncrypter
      * @throws IvSizeMismatchException If the IV length has been altered
      * @throws MacHashMismatchException If the data has been altered
      */
-    public function decrypt($data)
+    public function decrypt($data, $serialized = true)
     {
         // if this is not an encrypted string
         if (false === strpos($data, '|')) {
@@ -84,9 +71,6 @@ class AesEncrypter
         }
 
         list($encryptedData, $mac, $iv) = $this->strategy->decodeData($data);
-
-        //Tebru\assert($mac === $this->strategy->getMac($encryptedData), new MacHashMismatchException('MAC hashes do not match'));
-        //Tebru\assert(strlen($iv) === $this->strategy->getIvSize(), new IvSizeMismatchException('IV size does not match expectation'));
 
         if ($mac !== $this->strategy->getMac($encryptedData)){
             throw new MacHashMismatchException('MAC hashes do not match');
@@ -98,8 +82,6 @@ class AesEncrypter
 
         $serializedData = $this->strategy->decryptData($encryptedData, $iv);
 
-        $decrypted = unserialize($serializedData);
-
-        return $decrypted;
+        return $serialized ? unserialize($serializedData) : $serializedData;
     }
 }

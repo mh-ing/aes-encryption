@@ -169,10 +169,7 @@ class AesEncrypterTest extends PHPUnit_Framework_TestCase
         return [
             [AesEnum::METHOD_128, AesEncrypter::STRATEGY_OPENSSL],
             [AesEnum::METHOD_192, AesEncrypter::STRATEGY_OPENSSL],
-            [AesEnum::METHOD_256, AesEncrypter::STRATEGY_OPENSSL],
-            [AesEnum::METHOD_128, AesEncrypter::STRATEGY_MCRYPT],
-            [AesEnum::METHOD_192, AesEncrypter::STRATEGY_MCRYPT],
-            [AesEnum::METHOD_256, AesEncrypter::STRATEGY_MCRYPT],
+            [AesEnum::METHOD_256, AesEncrypter::STRATEGY_OPENSSL]
         ];
     }
 }
